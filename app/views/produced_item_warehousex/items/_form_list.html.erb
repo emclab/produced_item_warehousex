@@ -1,0 +1,55 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div class="pagination"><%= will_paginate models %></div>
+    <table class="table table-striped">
+		<tr>
+			<th><%= t('#') %></th>
+			<th><%= t('Batch#') %></th>
+			<th><%= t('Name') %></th>
+			<th><%= t('In Date') %></th>
+			<th><%= t('In Qty') %></th>				
+			<th><%= t('Stock Qty') %></th>
+			<th><%= t('Storage Location') %></th>			
+			<th><%= t('Packaging') %></th>
+			<th><%= t('Brief Note') %></th>
+			<th><%= t('Checkin By') %></th>
+			<th><%= t('Last Updated By') %></th>
+			<th></th>
+			<th></th>
+			
+		</tr>
+		<% models.each do |r| %>
+		  <tr>
+		  	<% unless has_action_right?('show', params[:controller], r) %>
+		  	  <td><%= prt(r, :id) %></td>
+		  	<% else %>
+		  	  <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{item_path(r)}" %></td>
+		  	<% end %>
+		  	<td><%= prt(r, 'batch_id') %></td>
+		  	<td><%= prt(r, 'name') %></td>
+		  	<td><%= r.in_date.strftime("%Y/%m/%d") %></td>
+		  	<td><%= prt(r, :in_qty) %></td>
+			<td><%= prt(r, :stock_qty) %></td>
+			<td><%= prt(r, :storage_location) %></td> 
+			<td><%= prt(r, :packaging_desp) %></td>
+			<td><%= prt(r,'brief_note') %></td>
+			<td><%= prt(r, 'checkin_by.name') if r.checkin_by_id.present? %></td>
+			<td><%= prt(r, 'last_updated_by.name') %></td>    
+			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+			<td><%= link_to t('Item Checkouts'), SUBURI + "/authentify/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts', r) %></td>
+		  </tr>
+		<% end %>
+	</table>
+	
+	<table class="table table-striped">
+	  <tr>
+	    <th>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    </th>
+	  </tr>
+	</table>
+
+<% end %>	

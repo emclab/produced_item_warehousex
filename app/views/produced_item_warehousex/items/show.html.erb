@@ -1,0 +1,58 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id="main_body">
+<h4><%=t('Warehouse Item Info') %></h4>
+
+<p>
+  <b><%= t('Batch#') %></b>
+  <%= @item.batch_id %>
+</p>
+<p>
+  <b><%= t('Name') %></b>
+  <%= @item.name %>
+</p>
+<p>
+  <b><%= t('In Date') %></b>
+  <%= @item.in_date.strftime("%Y/%m/%d") if @item.in_date.present?%>
+</p>
+<p>
+  <b><%= t('In Qty')  %></b>
+  <%= @item.in_qty %>
+</p>
+<p>
+  <b><%= t('Stock Qty')  %></b>
+  <%= @item.stock_qty %>
+</p>
+<p>
+  <b><%= t('Storage Location') %></b>
+  <%= @item.storage_location %>
+</p>
+<p>
+  <b><%= t('Packaging') %></b>
+  <%= @item.packaging_desp %>
+</p>
+<p>
+  <b><%= t('Brief Note') %></b>
+  <%= @item.brief_note %>
+</p>
+<p>
+  <b><%= t('Checkin By') %></b>
+  <%= @item.checkin_by.name if @item.checkin_by_id.present? %>
+</p>
+
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @item.last_updated_by.name %>
+</p>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+  	  	  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+        </th>
+	  </tr>
+	</table>    	
+</div>
+
+<% end %>

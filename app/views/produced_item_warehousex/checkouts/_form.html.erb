@@ -1,0 +1,19 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @checkout do |f| %>    
+  <%= f.input :item_id, :label => t("Item#"), :readonly => true, :input_html => {:value => @item.id} %> 
+  <%= f.input :name, :label => t("Item Name"), :readonly => true, :input_html => {:value => @item.name} %>
+  <%= f.input :out_date, :label => t("Out Date"), :as => :string %> 
+  <%= f.input :out_qty, :label => t("Out Qty"), :readonly => readonly?(@checkout, 'out_qty') %>
+  <%= f.input :requested_by_id, :label => t("Requested By"), :collection => Authentify::UsersHelper::return_users('index', 'item_checkoutx_checkouts'), :label_method => :name, :value_method => :id %> 
+  <%= f.input :brief_note, :label => t("Brief Note"), :input_html => {:rows => 3}, :readonly => readonly?(@checkout, 'brief_note') %>
+  <%= f.input :last_updated_by_name, :readonly => true, :input_html => {:value => @checkout.last_updated_by.name}%> 
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') %>  
+  
+<% end %>
+
+<% end %>

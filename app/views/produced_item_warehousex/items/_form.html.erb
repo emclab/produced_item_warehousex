@@ -1,0 +1,21 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @item do |f| %>    
+
+  <%= f.input :batch_id_noupdate, :label => t("Batch#"), :readonly => true, :input_html => {:value => @item.batch_id} %>
+  <%= f.input :name, :label => t("Name"), :readonly => true, :input_html => {:value => @name} %>
+  <%= f.input :in_date, :label => t("In Date"), :as => :string, :readonly => readonly?(@item, 'in_date') %> 
+  <%= f.input :in_qty, :label => t("In Qty"), :readonly => readonly?(@item, 'in_qty') %>
+  <%= f.input :storage_location, :label => t("Storage Location"), :readonly => readonly?(@item, 'storage_location') %> 
+  <%= f.input :packaging_desp, :label => t("Packaging"), :input_html => {:rows => 1}, :readonly => readonly?(@item, 'packaging_desp') %> 
+  <%= f.input :brief_note, :label => t("Brief Note"), :input_html => {:rows => 2}, :readonly => readonly?(@item, 'brief_note') %> 
+  <%= f.input :checkin_by_name, :label => t('Received By'), :readonly => true, :input_html => {:value => @item.checkin_by.name} %>
+  <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :readonly => true, :input_html => {:value => @item.last_updated_by.name} %>
+    
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') %>  
+<% end %>
+
+<% end %>
