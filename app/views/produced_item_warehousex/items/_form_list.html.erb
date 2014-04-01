@@ -37,8 +37,9 @@
 			<td><%= prt(r,'brief_note') %></td>
 			<td><%= prt(r, 'checkin_by.name') if r.checkin_by_id.present? %></td>
 			<td><%= prt(r, 'last_updated_by.name') %></td>    
+			<td><%= link_to t('Item Checkouts'), SUBURI + "/authentify/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts') %></td>
 			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
-			<td><%= link_to t('Item Checkouts'), SUBURI + "/authentify/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts', r) %></td>
+			
 		  </tr>
 		<% end %>
 	</table>

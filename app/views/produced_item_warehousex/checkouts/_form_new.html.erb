@@ -6,6 +6,7 @@
   <%= f.input :item_id, :label => t("Item#"), :readonly => true, :input_html => {:value => @item.id} %> 
   <%= f.input :name, :label => t("Item Name"), :readonly => true, :input_html => {:value => @item.name} %>
   <%= f.input :out_date, :label => t("Out Date"), :as => :string %> 
+  <%= f.input :stock_qty, :label => t("Stock Qty"), :readonly => true, :input_html => {:value => @item.stock_qty} %>
   <%= f.input :out_qty, :label => t("Out Qty") %>
   <%= f.input :requested_by_id, :label => t("Requested By", :collection => Authentify::UsersHelper::return_users('index', 'produced_item_warehousex_checkouts'), :label_method => :name, :value_method => :id,
                 :include_blank => true) %> 

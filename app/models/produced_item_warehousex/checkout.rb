@@ -1,8 +1,9 @@
 module ProducedItemWarehousex
   class Checkout < ActiveRecord::Base
-    attr_accessor :last_updated_by_name, :id_noupdate, :wf_comment, :item_id_noupdate
+    attr_accessor :last_updated_by_name, :id_noupdate, :wf_comment, :item_id_noupdate, :stock_qty
     
     attr_accessible :brief_note, :checkout_by_id, :item_id, :last_updated_by_id, :out_date, :out_qty, :packaging_desp, :requested_by_id, :wf_state,
+                    :stock_qty,
                     :as => :role_new
     attr_accessible :brief_note, :checkout_by_id, :last_updated_by_id, :out_date, :out_qty, :packaging_desp, :requested_by_id, :wf_state,
                     :last_updated_by_name, :id_noupdate, :wf_comment, :item_id_noupdate, 
