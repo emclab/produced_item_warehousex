@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">=3.2.12"
   s.add_dependency "jquery-rails"
-  s.add_dependency "simple_form", "~>2.1.1"
+  s.add_dependency "simple_form"  #, "~>2.1.1"
   s.add_dependency "will_paginate"
   s.add_dependency "database_cleaner"
   s.add_dependency "execjs"
