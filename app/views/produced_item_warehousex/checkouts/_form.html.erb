@@ -12,7 +12,7 @@
   <%= f.input :last_updated_by_name, :readonly => true, :input_html => {:value => @checkout.last_updated_by.name}%> 
   
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-  <%= f.button :submit, t('Save') %>  
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
   
 <% end %>
 

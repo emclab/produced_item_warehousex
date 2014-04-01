@@ -15,7 +15,7 @@
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :readonly => true, :input_html => {:value => @item.last_updated_by.name} %>
     
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-  <%= f.button :submit, t('Save') %>  
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %>
 
 <% end %>
