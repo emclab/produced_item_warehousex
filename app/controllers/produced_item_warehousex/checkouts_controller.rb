@@ -61,6 +61,7 @@ module ProducedItemWarehousex
 =end
     protected
     def load_parent_record
+      @item = ProducedItemWarehousex::Item.find_by_id(params[:checkout][:item_id]) if params[:checkout].present? && params[:checkout][:item_id].present?
       @item = ProducedItemWarehousex::Item.find_by_id(params[:item_id]) if params[:item_id].present?
       @item = ProducedItemWarehousex::Item.find_by_id(ProducedItemWarehousex::Checkout.find_by_id(params[:id]).item_id) if params[:id].present?
     end
