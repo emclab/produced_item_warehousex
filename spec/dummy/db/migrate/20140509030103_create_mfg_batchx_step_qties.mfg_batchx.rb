@@ -7,8 +7,8 @@ class CreateMfgBatchxStepQties < ActiveRecord::Migration
       t.integer :qty
       t.text :brief_note
       t.integer :last_updated_by_id
-
       t.timestamps
+      t.string :ontime_indicator  #green, red and yellow
     end
     
     add_index :mfg_batchx_step_qties, :batch_id

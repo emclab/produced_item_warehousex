@@ -30,6 +30,7 @@ module ProducedItemWarehousex
         @name = params[:item][:name].strip if params[:item][:name].present?
         @qty = params[:item][:qty] if params[:item][:qty].present?
         @batch = ProducedItemWarehousex.batch_class.find_by_id(params[:item][:batch_id]) if params[:item][:batch_id].present?
+        @erb_code = find_config_const('item_new_view', 'produced_item_warehousex')
         flash[:notice] = t('Data Error. Not Saved!')
         render 'new'
       end
@@ -49,6 +50,7 @@ module ProducedItemWarehousex
       else
         @name = ProducedItemWarehousex::Item.find_by_id(params[:id]).name
         @batch = ProducedItemWarehousex.batch_class.find_by_id(@item.batch_id)
+        @erb_code = find_config_const('item_edit_view', 'produced_item_warehousex')
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end

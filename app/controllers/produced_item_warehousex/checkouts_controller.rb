@@ -29,6 +29,7 @@ module ProducedItemWarehousex
           redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
         else
           @item = ProducedItemWarehousex::Item.find_by_id(params[:checkout][:item_id]) if params[:checkout].present? && params[:checkout][:item_id].present?
+          @erb_code = find_config_const('checkout_new_view', 'produced_item_warehousex')
           flash[:notice] = t('Data Error. Not Saved!')
           render 'new'
         end
@@ -47,6 +48,7 @@ module ProducedItemWarehousex
       if @checkout.update_attributes(params[:checkout], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
+        @erb_code = find_config_const('checkout_edit_view', 'produced_item_warehousex')
         flash[:notice] = t('Data Error. Not Updated!')
         render 'edit'
       end

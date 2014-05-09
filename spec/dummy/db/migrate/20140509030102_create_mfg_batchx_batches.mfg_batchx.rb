@@ -2,7 +2,7 @@
 class CreateMfgBatchxBatches < ActiveRecord::Migration
   def change
     create_table :mfg_batchx_batches do |t|
-      t.string :wfid
+      t.string :batch_num
       t.string :wf_state
       t.integer :order_id
       t.integer :last_updated_by_id
@@ -25,5 +25,6 @@ class CreateMfgBatchxBatches < ActiveRecord::Migration
     add_index :mfg_batchx_batches, :completed
     add_index :mfg_batchx_batches, :void
     add_index :mfg_batchx_batches, :wf_state
+    add_index :mfg_batchx_batches, :finish_date
   end
 end
