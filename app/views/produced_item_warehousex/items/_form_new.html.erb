@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%=@title %></h4>
 <%= simple_form_for @item do |f| %>    
 
   <%= f.input :batch_id, :label => t("Batch#"), :readonly => true, :input_html => {:value => @batch.id} %>
@@ -12,7 +13,7 @@
   <%= f.input :packaging_desp, :label => t("Packaging"), :input_html => {:rows => 1} %>
   <%= f.input :brief_note, :label => t("Brief Note"), :input_html => {:rows => 2} %>
   
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %>
 

@@ -3,6 +3,7 @@
   
 <% else %>
 <div class="pagination"><%= will_paginate models %></div>
+<h4><%=@title%></h4>
     <table class="table table-striped">
 		<tr>
 			<th><%= t('#') %></th>
@@ -25,7 +26,7 @@
 		  	<% unless has_action_right?('show', params[:controller], r) %>
 		  	  <td><%= prt(r, :id) %></td>
 		  	<% else %>
-		  	  <td><%= link_to r.id.to_s, SUBURI + "/authentify/view_handler?index=1&url=#{item_path(r)}" %></td>
+		  	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{item_path(r)}" %></td>
 		  	<% end %>
 		  	<td><%= prt(r, 'batch_id') %></td>
 		  	<td><%= prt(r, 'name') %></td>
@@ -37,8 +38,8 @@
 			<td><%= prt(r,'brief_note') %></td>
 			<td><%= prt(r, 'checkin_by.name') if r.checkin_by_id.present? %></td>
 			<td><%= prt(r, 'last_updated_by.name') %></td>    
-			<td><%= link_to t('Item Checkouts'), SUBURI + "/authentify/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts') %></td>
-			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+			<td><%= link_to t('Item Checkouts'), SUBURI + "/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts') %></td>
+			<td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
 			
 		  </tr>
 		<% end %>
@@ -48,7 +49,7 @@
 	  <tr>
 	    <th>
 	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    	<%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
 	    </th>
 	  </tr>
 	</table>

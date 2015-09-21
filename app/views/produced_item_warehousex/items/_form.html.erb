@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%=@title %></h4>
 <%= simple_form_for @item do |f| %>    
 
   <%= f.input :batch_id_noupdate, :label => t("Batch#"), :readonly => true, :input_html => {:value => @item.batch_id} %>
@@ -14,7 +15,7 @@
   <%= f.input :checkin_by_name, :label => t('Received By'), :readonly => true, :input_html => {:value => @item.checkin_by.name} %>
   <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :readonly => true, :input_html => {:value => @item.last_updated_by.name} %>
     
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>  
 <% end %>
 

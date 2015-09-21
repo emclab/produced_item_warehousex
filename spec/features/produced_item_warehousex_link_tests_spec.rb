@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "LinkTests" do
+RSpec.describe "LinkTests", type: :request do
   describe "GET /produced_item_warehousex_link_tests" do
     mini_btn = 'btn btn-mini '
     ActionView::CompiledTemplates::BUTTONS_CLS =
@@ -19,7 +19,11 @@ describe "LinkTests" do
          'inverse'      => 'btn btn-inverse',
          'mini-inverse' => mini_btn + 'btn btn-inverse',
          'link'         => 'btn btn-link',
-         'mini-link'    => mini_btn +  'btn btn-link'
+         'mini-link'    => mini_btn +  'btn btn-link',
+         'right-span#'         => '2', 
+               'left-span#'         => '6', 
+               'offset#'         => '2',
+               'form-span#'         => '4'
         }
     before(:each) do
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
@@ -44,7 +48,7 @@ describe "LinkTests" do
       user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "record.checkin_by_id == session[:user_id]")
       user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'produced_item_warehousex_checkouts', :role_definition_id => @role.id, :rank => 1,
-        :sql_code => "ProducedItemWarehousex::Checkout.scoped.order('created_at DESC')")
+        :sql_code => "ProducedItemWarehousex::Checkout.order('created_at DESC')")
       user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_checkouts', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'produced_item_warehousex_checkouts', :role_definition_id => @role.id, :rank => 1,
@@ -61,40 +65,40 @@ describe "LinkTests" do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: @b.id)
       
-      visit items_path
+      visit produced_item_warehousex.items_path
       #save_and_open_page
-      page.should have_content('Warehouse Items')
+      expect(page).to have_content('Warehouse Items')
       click_link 'Edit'
-      page.should have_content('Edit Warehouse Item')
+      expect(page).to have_content('Update Warehouse Item')
       #save_and_open_page
-      visit items_path
+      visit produced_item_warehousex.items_path
       click_link q.id.to_s
       #save_and_open_page
-      page.should have_content('Warehouse Item Info')
+      expect(page).to have_content('Warehouse Item Info')
       
-      visit new_item_path(batch_id: @b.id)
+      visit produced_item_warehousex.new_item_path(batch_id: @b.id)
       #save_and_open_page
-      page.should have_content('New Warehouse Item')
+      expect(page).to have_content('New Warehouse Item')
     end
     
     it "works for checkout" do
       i = FactoryGirl.create(:produced_item_warehousex_item, batch_id: @b.id)
       q = FactoryGirl.create(:produced_item_warehousex_checkout, :item_id => i.id)
-      visit checkouts_path
+      visit produced_item_warehousex.checkouts_path
       #save_and_open_page
-      page.should have_content('Warehouse Checkouts')
+      expect(page).to have_content('Warehouse Checkouts')
       click_link 'Edit'
-      page.should have_content('Edit Warehouse Checkout')
+      expect(page).to have_content('Update Warehouse Checkout')
            
-      visit new_checkout_path(:item_id => i.id)
+      visit produced_item_warehousex.new_checkout_path(:item_id => i.id)
       #save_and_open_page
-      page.should have_content('New Warehouse Checkout')
+      expect(page).to have_content('New Warehouse Checkout')
       
       #
-      visit checkouts_path(item_id: i.id)
+      visit produced_item_warehousex.checkouts_path(item_id: i.id)
       #save_and_open_page
       click_link 'New Checkout'
-      page.should have_content('New Warehouse Checkout')
+      expect(page).to have_content('New Warehouse Checkout')
       save_and_open_page
     end
   end

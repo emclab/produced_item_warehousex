@@ -14,5 +14,6 @@ FactoryGirl.define do
     qty_produced 1
     batch_status_id 1
     wf_state ''
+    batch_num 'mydrawing1234'
   end
 end

@@ -1,11 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module ProducedItemWarehousex
-  describe ItemsController do
-  
+  RSpec.describe ItemsController, type: :controller do
+    routes {ProducedItemWarehousex::Engine.routes}
     before(:each) do
-      controller.should_receive(:require_signin)
-      controller.should_receive(:require_employee)
+      expect(controller).to receive(:require_signin)
+      expect(controller).to receive(:require_employee)
       
     end
     
@@ -19,6 +19,8 @@ module ProducedItemWarehousex
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
       @b = FactoryGirl.create(:mfg_batchx_batch)
+      
+      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids  
     end
     
     render_views
@@ -28,11 +30,10 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "ProducedItemWarehousex::Item.order('created_at DESC')")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id)
         q1 = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: q.batch_id + 1)
-        get 'index', {:use_route => :produced_item_warehousex}
-        assigns(:items).should =~ [q, q1]
+        get 'index'
+        expect(assigns(:items)).to match_array( [q, q1])
       end
       
     end
@@ -42,9 +43,8 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        get 'new', {:use_route => :produced_item_warehousex, batch_id: @b.id}
-        response.should be_success
+        get 'new', {batch_id: @b.id}
+        expect(response).to be_success
       end
     end
   
@@ -53,20 +53,18 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.attributes_for(:produced_item_warehousex_item, batch_id: @b.id)
-        get 'create', {:use_route => :produced_item_warehousex, :item => q}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        get 'create', {:item => q}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
       
       it "should render new with data error" do
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        q = FactoryGirl.attributes_for(:produced_item_warehousex_item, :name => nil, batch_id: @b.id)
-        get 'create', {:use_route => :produced_item_warehousex, :item => q}
-        response.should render_template('new')
+        q = FactoryGirl.attributes_for(:produced_item_warehousex_item, :in_qty => nil, batch_id: @b.id)
+        get 'create', {:item => q}
+        expect(response).to render_template('new')
       end
     end
   
@@ -75,10 +73,9 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: @b.id)
-        get 'edit', {:use_route => :produced_item_warehousex, :id => q.id}
-        response.should be_success
+        get 'edit', {:id => q.id}
+        expect(response).to be_success
       end
     end
   
@@ -87,20 +84,18 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id)
-        get 'update', {:use_route => :produced_item_warehousex, :id => q.id, :item => {:in_qty => 20}}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        get 'update', {:id => q.id, :item => {:in_qty => 20}}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render edit with data error" do
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id)
-        get 'update', {:use_route => :produced_item_warehousex, :id => q.id, :item => {:in_qty => 0}}
-        response.should render_template('edit')
+        get 'update', {:id => q.id, :item => {:in_qty => 0}}
+        expect(response).to render_template('edit')
       end
     end
   
@@ -109,10 +104,9 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "record.checkin_by_id == session[:user_id]")
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: @b.id)
-        get 'show', {:use_route => :produced_item_warehousex, :id => q.id }
-        response.should be_success
+        get 'show', {:id => q.id }
+        expect(response).to be_success
       end
     end
   end

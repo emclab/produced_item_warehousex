@@ -1,3 +1,5 @@
 MfgBatchx.order_class = 'MfgOrderx::Order'
 MfgBatchx.rfq_class = 'JobshopRfqx::Rfq'
-MfgBatchx.show_rfq_path = 'jobshop_rfqx.rfq_path(r.rfq_id)'
+MfgBatchx.warehouse_item_class = 'ProducedItemWarehousex::Item'
+MfgBatchx.customer_class = 'Kustomerx::Customer'
+MfgBatchx.step_class = 'MfgBatchx::StepQty'

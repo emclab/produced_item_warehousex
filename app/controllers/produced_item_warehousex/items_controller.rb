@@ -2,8 +2,8 @@ require_dependency "produced_item_warehousex/application_controller"
 
 module ProducedItemWarehousex
   class ItemsController < ApplicationController
-    before_filter :require_employee
-    before_filter :load_record
+    before_action :require_employee
+    before_action :load_record
     
     def index
       @title = t('Warehouse Items')
@@ -20,12 +20,12 @@ module ProducedItemWarehousex
     end
   
     def create
-      @item = ProducedItemWarehousex::Item.new(params[:item], :as => :role_new)
+      @item = ProducedItemWarehousex::Item.new(new_params)
       @item.last_updated_by_id = session[:user_id]
       @item.checkin_by_id = session[:user_id]
       @item.stock_qty = params[:item][:in_qty]
       if @item.save
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       else
         @name = params[:item][:name].strip if params[:item][:name].present?
         @qty = params[:item][:qty] if params[:item][:qty].present?
@@ -45,8 +45,8 @@ module ProducedItemWarehousex
     def update
       @item = ProducedItemWarehousex::Item.find_by_id(params[:id])
       @item.last_updated_by_id = session[:user_id]
-      if @item.update_attributes(params[:item], :as => :role_update)
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+      if @item.update_attributes(edit_params)
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       else
         @name = ProducedItemWarehousex::Item.find_by_id(params[:id]).name
         @batch = ProducedItemWarehousex.batch_class.find_by_id(@item.batch_id)
@@ -69,6 +69,17 @@ module ProducedItemWarehousex
       @qty = params[:qty] if params[:qty].present?
       @batch = ProducedItemWarehousex.batch_class.find_by_id(params[:batch_id]) if params[:batch_id].present?
       @batch = ProducedItemWarehousex.batch_class.find_by_id(ProducedItemWarehousex::Item.find_by_id(params[:id]).batch_id) if params[:id].present?
+    end
+    
+    private
+    
+    def new_params
+      params.require(:item).permit(:batch_id, :brief_note, :in_date, :in_qty, :stock_qty, :last_updated_by_id, :packaging_desp, :storage_location, :checkin_by_id, :name,
+                                   :part_id)
+    end
+    
+    def edit_params
+      params.require(:item).permit(:brief_note, :in_date, :in_qty, :stock_qty, :last_updated_by_id, :packaging_desp, :storage_location, :checkin_by_id, :name, :part_id)
     end
     
   end

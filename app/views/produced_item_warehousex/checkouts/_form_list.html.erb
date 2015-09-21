@@ -3,6 +3,7 @@
   
 <% else %>
 <div class="pagination"><%= will_paginate models %></div>
+<h4><%=@title %></h4>
     <table class="table table-striped">
 		<tr>
 			<th>#</th>
@@ -22,7 +23,7 @@
 		  	<td><%= r.id %></td>
 		  	<td><%= r.out_date.strftime("%Y/%m/%d") %></td>		  	
 		  	<% if has_action_right?('show', 'produced_item_warehousex/items', ProducedItemWarehousex::Item.find_by_id(r.item_id))%>
-		  	  <td><%= link_to r.item_id, SUBURI + "/authentify/view_handler?index=1&url=#{item_path(:id => r.item_id)}" %></td>
+		  	  <td><%= link_to r.item_id, SUBURI + "/view_handler?index=1&url=#{item_path(:id => r.item_id)}" %></td>
 		  	<% else %>
 		  	  <td><%= r.item_id %></td>
 		  	<% end %>
@@ -32,7 +33,7 @@
 			<td><%= prt(r, 'requested_by.name') %></td> 
 			<td><%= prt(r, 'checkout_by.name') %></td>
 			<td><%= prt(r, 'last_updated_by.name') %></td>    
-			<td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_checkout_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+			<td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_checkout_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
 			
 		  </tr>
 		<% end %>
@@ -42,8 +43,8 @@
 	  <tr>
 	    <th>
 	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	    	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
-	    	<%= link_to t('New Checkout'), SUBURI + "/authentify/view_handler?index=1&url=#{new_checkout_path(:item_id => @item.id, :parent_record_id => @item.id, :parent_resource => 'produced_item_warehousex/items') }", :class => BUTTONS_CLS['action']  if @item && @item.stock_qty > 0 && has_action_right?('create', params[:controller], @item) %>
+	    	<%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    	<%= link_to t('New Checkout'), SUBURI + "/view_handler?index=1&url=#{new_checkout_path(:item_id => @item.id, :parent_record_id => @item.id, :parent_resource => 'produced_item_warehousex/items') }", :class => BUTTONS_CLS['action']  if @item && @item.stock_qty > 0 && has_action_right?('create', params[:controller], @item) %>
 	    </th>
 	  </tr>
 	</table>

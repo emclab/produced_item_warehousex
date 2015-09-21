@@ -15,6 +15,7 @@ class CreateMfgBatchxBatches < ActiveRecord::Migration
       t.boolean :void, :default => false
       t.integer :qty_produced
       t.integer :batch_status_id
+      t.integer :coordinator_id
 
       t.timestamps
     end
@@ -26,5 +27,6 @@ class CreateMfgBatchxBatches < ActiveRecord::Migration
     add_index :mfg_batchx_batches, :void
     add_index :mfg_batchx_batches, :wf_state
     add_index :mfg_batchx_batches, :finish_date
+    add_index :mfg_batchx_batches, :coordinator_id
   end
 end
