@@ -31,7 +31,7 @@ zh-CN:
   Checkin By : '入库人'
   Delete  : '删除'
   Spec  : '规格'
-  Item Name  : '库存名称'
+  Item Name  : '产品名称'
   Name : '名称'
   Inspection : '验收记录'
   Rejected : '拒收'
@@ -54,4 +54,5 @@ zh-CN:
   In Qty : '入库数量'
   Stock Qty : '库存数量'
   New Checkout : '新出库'
-  'Item#' : '库存#'
+  'Item#' : '产品#'
+
