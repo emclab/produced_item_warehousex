@@ -11,5 +11,6 @@ FactoryGirl.define do
     checkout_by_id 1
     brief_note "MyText"
     packaging_desp "MyText"
+    fort_token '123456789'
   end
 end

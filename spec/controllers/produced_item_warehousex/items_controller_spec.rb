@@ -10,6 +10,7 @@ module ProducedItemWarehousex
     end
     
     before(:each) do
+      config_entry = FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'SESSION_TIMEOUT_MINUTES', :argument_value => 30)
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       z = FactoryGirl.create(:zone, :zone_name => 'hq')
       type = FactoryGirl.create(:group_type, :name => 'employee')
@@ -18,9 +19,10 @@ module ProducedItemWarehousex
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
-      @b = FactoryGirl.create(:mfg_batchx_batch)
+      @b = FactoryGirl.create(:production_orderx_part_production)
       
       session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids  
+      session[:fort_token] = @u.fort_token
     end
     
     render_views
@@ -31,7 +33,7 @@ module ProducedItemWarehousex
         :sql_code => "ProducedItemWarehousex::Item.order('created_at DESC')")
         session[:user_id] = @u.id
         q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id)
-        q1 = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: q.batch_id + 1)
+        q1 = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, order_id: q.order_id + 1)
         get 'index'
         expect(assigns(:items)).to match_array( [q, q1])
       end
@@ -43,7 +45,7 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        get 'new', {batch_id: @b.id}
+        get 'new', {order_id: @b.id}
         expect(response).to be_success
       end
     end
@@ -53,7 +55,7 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        q = FactoryGirl.attributes_for(:produced_item_warehousex_item, batch_id: @b.id)
+        q = FactoryGirl.attributes_for(:produced_item_warehousex_item, order_id: @b.id)
         get 'create', {:item => q}
         expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
@@ -62,7 +64,7 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        q = FactoryGirl.attributes_for(:produced_item_warehousex_item, :in_qty => nil, batch_id: @b.id)
+        q = FactoryGirl.attributes_for(:produced_item_warehousex_item, :in_qty => nil, order_id: @b.id)
         get 'create', {:item => q}
         expect(response).to render_template('new')
       end
@@ -73,7 +75,7 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
         session[:user_id] = @u.id
-        q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: @b.id)
+        q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, order_id: @b.id)
         get 'edit', {:id => q.id}
         expect(response).to be_success
       end
@@ -104,7 +106,7 @@ module ProducedItemWarehousex
         user_access = FactoryGirl.create(:user_access, :action => 'show', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "record.checkin_by_id == session[:user_id]")
         session[:user_id] = @u.id
-        q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: @b.id)
+        q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, order_id: @b.id)
         get 'show', {:id => q.id }
         expect(response).to be_success
       end

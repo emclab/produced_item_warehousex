@@ -5,7 +5,7 @@
 <h4><%=@title %></h4>
 <%= simple_form_for @item do |f| %>    
 
-  <%= f.input :batch_id_noupdate, :label => t("Batch#"), :readonly => true, :input_html => {:value => @item.batch_id} %>
+  <%= f.input :order_id_noupdate, :label => t("Production Order#"), :readonly => true, :input_html => {:value => @item.order_id} %>
   <%= f.input :name, :label => t("Name"), :readonly => true, :input_html => {:value => @name} %>
   <%= f.input :in_date, :label => t("In Date"), :as => :string, :readonly => readonly?(@item, 'in_date') %> 
   <%= f.input :in_qty, :label => t("In Qty"), :readonly => readonly?(@item, 'in_qty') %>

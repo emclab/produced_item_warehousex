@@ -23,6 +23,11 @@ module ProducedItemWarehousex
       expect(c).not_to be_valid
     end
     
+    it "should reject nil fort_token" do
+      c = FactoryGirl.build(:produced_item_warehousex_checkout, :fort_token => nil)
+      expect(c).not_to be_valid
+    end
+    
     it "should reject nil out_qty" do
       c = FactoryGirl.build(:produced_item_warehousex_checkout, :out_qty => nil)
       expect(c).not_to be_valid

@@ -26,6 +26,8 @@ RSpec.describe "LinkTests", type: :request do
                'form-span#'         => '4'
         }
     before(:each) do
+      FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'enable_info_logger', :argument_value => 'true')
+      config_entry = FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'SESSION_TIMEOUT_MINUTES', :argument_value => 30)
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       z = FactoryGirl.create(:zone, :zone_name => 'hq')
       type = FactoryGirl.create(:group_type, :name => 'employee')
@@ -34,10 +36,10 @@ RSpec.describe "LinkTests", type: :request do
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
-      @b = FactoryGirl.create(:mfg_batchx_batch)
-      @b1 = FactoryGirl.create(:mfg_batchx_batch)
-      #@i = FactoryGirl.create(:produced_item_warehousex_item, batch_id: @b.id)
-      #@i1 = FactoryGirl.create(:produced_item_warehousex_item, batch_id: @b1.id)
+      @b = FactoryGirl.create(:production_orderx_part_production)
+      @b1 = FactoryGirl.create(:production_orderx_part_production, :part_name => 'a new name', :spec => 'a new spec')
+      #@i = FactoryGirl.create(:produced_item_warehousex_item, order_id: @b.id)
+      #@i1 = FactoryGirl.create(:produced_item_warehousex_item, order_id: @b1.id)
       
       user_access = FactoryGirl.create(:user_access, :action => 'index', :resource =>'produced_item_warehousex_items', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "ProducedItemWarehousex::Item.order('created_at DESC')")
@@ -63,7 +65,7 @@ RSpec.describe "LinkTests", type: :request do
     end
     it "works! for items(now write some real specs)" do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, batch_id: @b.id)
+      q = FactoryGirl.create(:produced_item_warehousex_item, :checkin_by_id => @u.id, order_id: @b.id)
       
       visit produced_item_warehousex.items_path
       #save_and_open_page
@@ -76,13 +78,13 @@ RSpec.describe "LinkTests", type: :request do
       #save_and_open_page
       expect(page).to have_content('Warehouse Item Info')
       
-      visit produced_item_warehousex.new_item_path(batch_id: @b.id)
+      visit produced_item_warehousex.new_item_path(order_id: @b.id)
       #save_and_open_page
       expect(page).to have_content('New Warehouse Item')
     end
     
     it "works for checkout" do
-      i = FactoryGirl.create(:produced_item_warehousex_item, batch_id: @b.id)
+      i = FactoryGirl.create(:produced_item_warehousex_item, order_id: @b.id)
       q = FactoryGirl.create(:produced_item_warehousex_checkout, :item_id => i.id)
       visit produced_item_warehousex.checkouts_path
       #save_and_open_page

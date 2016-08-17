@@ -7,8 +7,8 @@
     <table class="table table-striped">
 		<tr>
 			<th><%= t('#') %></th>
-			<th><%= t('Batch#') %></th>
-			<th><%= t('Name') %></th>
+			<th><%= t('Production Order#') %></th>
+			<th><%= t('Product Name') %></th>
 			<th><%= t('In Date') %></th>
 			<th><%= t('In Qty') %></th>				
 			<th><%= t('Stock Qty') %></th>
@@ -28,7 +28,7 @@
 		  	<% else %>
 		  	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{item_path(r)}" %></td>
 		  	<% end %>
-		  	<td><%= prt(r, 'batch_id') %></td>
+		  	<td><%= prt(r, 'order_id') %></td>
 		  	<td><%= prt(r, 'name') %></td>
 		  	<td><%= r.in_date.strftime("%Y/%m/%d") %></td>
 		  	<td><%= prt(r, :in_qty) %></td>

@@ -10,6 +10,7 @@ module ProducedItemWarehousex
     end
     
     before(:each) do
+      config_entry = FactoryGirl.create(:engine_config, :engine_name => 'rails_app', :engine_version => nil, :argument_name => 'SESSION_TIMEOUT_MINUTES', :argument_value => 30)
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       z = FactoryGirl.create(:zone, :zone_name => 'hq')
       type = FactoryGirl.create(:group_type, :name => 'employee')
@@ -18,12 +19,13 @@ module ProducedItemWarehousex
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])      
-      @b = FactoryGirl.create(:mfg_batchx_batch)
-      @b1 = FactoryGirl.create(:mfg_batchx_batch)
-      @i = FactoryGirl.create(:produced_item_warehousex_item, batch_id: @b.id)
-      @i1 = FactoryGirl.create(:produced_item_warehousex_item, batch_id: @b1.id)
+      @b = FactoryGirl.create(:production_orderx_part_production)
+      @b1 = FactoryGirl.create(:production_orderx_part_production, :part_name => 'a new name', :spec => 'a new spec')
+      @i = FactoryGirl.create(:produced_item_warehousex_item, order_id: @b.id)
+      @i1 = FactoryGirl.create(:produced_item_warehousex_item, order_id: @b1.id)
       
-      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids  
+      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids 
+      session[:fort_token] = @u.fort_token 
     end
     
     render_views

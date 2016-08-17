@@ -1,3 +1,2 @@
-ProducedItemWarehousex.batch_class = 'MfgBatchx::Batch'
-ProducedItemWarehousex.part_class = 'Commonx::MiscDefinition'
+ProducedItemWarehousex.order_class = 'ProductionOrderx::PartProduction'
 

@@ -1,4 +1,5 @@
 FactoryGirl.define do
+  
   factory :user, class: 'Authentify::User'  do
  
     name                  "Test User"
@@ -11,9 +12,11 @@ FactoryGirl.define do
     auth_token            "123"
     password_reset_token  nil
     password_reset_sent_at nil
-    cell '123455'
-    allow_email false
-    allow_text_msg false
-    customer_id 1
+    fort_token '123456789'
+
+    #user_levels
+    #after(:build) do |user|
+    #  user.user_levels << FactoryGirl.build(:user_level, :user => user)
+    #end
   end
 end

@@ -10,5 +10,6 @@ FactoryGirl.define do
     search_where "MyText"
     search_list_form 'form_list'
     search_results_period_limit "MyText"
+    fort_token '123456789'
   end
 end

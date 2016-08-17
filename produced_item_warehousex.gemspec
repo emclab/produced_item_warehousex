@@ -7,11 +7,11 @@ require "produced_item_warehousex/version"
 Gem::Specification.new do |s|
   s.name        = "produced_item_warehousex"
   s.version     = ProducedItemWarehousex::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of ProducedItemWarehousex."
-  s.description = "TODO: Description of ProducedItemWarehousex."
+  s.authors     = ["Emclab"]
+  s.email       = ["Your@email.com"]
+  s.homepage    = "http://home.com"
+  s.summary     = "Summary of ProducedItemWarehousex."
+  s.description = "Description of ProducedItemWarehousex."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
