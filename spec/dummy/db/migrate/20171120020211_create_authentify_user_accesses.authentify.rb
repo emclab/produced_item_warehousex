@@ -13,12 +13,13 @@ class CreateAuthentifyUserAccesses < ActiveRecord::Migration
       t.text :sql_code
       t.text :masked_attrs
       t.integer :rank
-
       t.timestamps
-      t.string :fort_token
+      t.string :fort_token  
+      t.integer :id_in_cis    
     end
     
     add_index :authentify_user_accesses, :action
+    add_index :authentify_user_accesses, :fort_token
     add_index :authentify_user_accesses, :resource
     add_index :authentify_user_accesses, [:action, :resource]
     add_index :authentify_user_accesses, :role_definition_id

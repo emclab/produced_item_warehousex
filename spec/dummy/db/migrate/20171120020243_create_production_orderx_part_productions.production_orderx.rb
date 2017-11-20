@@ -13,9 +13,9 @@ class CreateProductionOrderxPartProductions < ActiveRecord::Migration
       t.date :finish_date
       t.boolean :void, :default => false
       t.integer :last_updated_by_id
-      t.integer :qty
+      t.decimal :qty, :precision => 12, :scale => 2
       t.string :unit
-      t.integer :qty_produced
+      t.decimal :qty_produced, :precision => 12, :scale => 2
       t.boolean :completed, :default => false
       t.boolean :expedite, :default => false
       t.integer :coordinator_id
@@ -25,6 +25,7 @@ class CreateProductionOrderxPartProductions < ActiveRecord::Migration
       t.text :brief_note
       t.string :aux_resource   #'ic_productionx/ic_infos'.  pointing to a table with more production order detail
       t.string :fort_token
+      #t.decimal :material_cost, :precision => 10, :scale => 2
            
       t.timestamps
     end

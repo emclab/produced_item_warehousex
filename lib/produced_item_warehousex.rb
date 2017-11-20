@@ -6,5 +6,6 @@ module ProducedItemWarehousex
   def self.order_class
     @@order_class.constantize
   end
-    
+
+
 end

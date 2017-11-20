@@ -8,7 +8,6 @@ class CreateCommonxMiscDefinitions < ActiveRecord::Migration
       t.text :brief_note
       t.integer :last_updated_by_id
       t.integer :ranking_index
-
       t.timestamps
       t.string :fort_token
     end
@@ -16,5 +15,6 @@ class CreateCommonxMiscDefinitions < ActiveRecord::Migration
     add_index :commonx_misc_definitions, :for_which
     add_index :commonx_misc_definitions, :active
     add_index :commonx_misc_definitions, [:active, :for_which]
+    add_index :commonx_misc_definitions, :fort_token
   end
 end

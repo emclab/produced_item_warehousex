@@ -8,3 +8,18 @@ spec/dummy/.sass-cache
 *.class
 *.pyc
 *.pyo
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+*.class
+*.pyc
+*.pyo
+config/secrets.yml
+config/secrets.yml
+*.class
+.idea/
+Gemfile.lock

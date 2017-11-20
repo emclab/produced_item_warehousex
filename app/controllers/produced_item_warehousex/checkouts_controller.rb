@@ -4,7 +4,7 @@ module ProducedItemWarehousex
   class CheckoutsController < ApplicationController
     before_action :require_employee
     before_action :load_parent_record
-    after_action :info_logger, :except => [:new, :edit, :event_action_result, :wf_edit_result, :search_results, :stats_results, :acct_summary_result]
+    after_action :generate_noti, :except => [:new, :edit, :event_action_result, :wf_edit_result, :search_results, :stats_results, :acct_summary_result]
     
     def index
       @title = t('Warehouse Checkouts')
@@ -69,7 +69,34 @@ module ProducedItemWarehousex
       @item = ProducedItemWarehousex::Item.find_by_id(params[:item_id]) if params[:item_id].present?
       @item = ProducedItemWarehousex::Item.find_by_id(ProducedItemWarehousex::Checkout.find_by_id(params[:id]).item_id) if params[:id].present?
     end
-    
+
+    def generate_noti
+      case params[:action]
+        when 'create'
+          msg = t('New Warehouse Checkout') + @checkout.id.to_s + ' ' + t('was created. ') + t('Amount:') + @checkout.requested_qty.to_s + ', item id:' + @checkout.item_id.to_s
+        #urgency = 8
+        when 'update'
+          msg = t("Warehouse Checkout#") + @checkout.id.to_s + ' ' + t('was changed. Here is a list of fields changed:')
+          msg += ' ' + t('Out Qty') if @checkout.out_qty_changed?
+          msg += ' ' + t('Out Date') if @checkout.out_date_changed?
+          msg += ' ' + t('Item Name') if @item.name_changed?
+          msg += ' ' + t('Requested By') if @checkout.checkout_by_id_changed?
+          msg += ' ' + t('WF State') if @checkout.wf_state_changed?
+          msg += ' ' + t('Requested Quantity') if @checkout.requested_qty_changed?
+          msg += ' ' + t('Brief Note') if @checkout.brief_note_changed?
+          urgency = 6
+        when 'destroy'
+          msg = t("Warehouse Checkout#") + params[:id].to_s + ' ' + t('has been deleted')
+        #urgency= 8
+        when 'event_action_result'
+          checkout = ProducedItemWarehousex::Checkout.find_by_id(params[:id])
+          msg = t("Workflow for Warehouse Checkout#") + params[:id].to_s + ' ' + t('has been updated to ') + t(checkout.wf_state.titleize)
+        #urgency = 10
+      end
+      noti_logger((@checkout.present? ? @checkout.id : params[:id]), params[:controller], msg)  #nil for urgency
+    end
+
+
     private
     
     def new_params

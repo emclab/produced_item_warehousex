@@ -11,11 +11,13 @@ class CreateAuthentifyEngineConfigs < ActiveRecord::Migration
       t.timestamps
       t.string      :brief_note
       t.boolean :global, :default => false
-      t.string :fort_token
+      t.string :fort_token   
+      t.integer :id_in_cis   
     end
     
     add_index :authentify_engine_configs, :engine_name
     add_index :authentify_engine_configs, :argument_name
+    add_index :authentify_engine_configs, :fort_token
     add_index :authentify_engine_configs, [:engine_name, :argument_name], :name => :authentify_engine_configs_names
   end
 end

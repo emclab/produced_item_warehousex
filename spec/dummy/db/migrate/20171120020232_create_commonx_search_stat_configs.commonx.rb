@@ -20,5 +20,6 @@ class CreateCommonxSearchStatConfigs < ActiveRecord::Migration
     end
     
     add_index :commonx_search_stat_configs, :resource_name
+    add_index :commonx_search_stat_configs, :fort_token
   end
 end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   #mount Searchx::Engine => '/searchx'
   #mount StateMachineLogx::Engine => '/sm_log'
   #mount BizWorkflowx::Engine => '/biz_wf'
+  mount Messagingx::Engine => '/msg'
   
   
   root :to => "authentify/sessions#new"

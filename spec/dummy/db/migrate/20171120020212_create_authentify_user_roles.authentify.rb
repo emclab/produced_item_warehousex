@@ -7,10 +7,11 @@ class CreateAuthentifyUserRoles < ActiveRecord::Migration
       t.integer :user_id
       t.timestamps
       t.string  :brief_note
-      t.string :fort_token
+      t.string :fort_token      
     end
     
     add_index :authentify_user_roles, :user_id
     add_index :authentify_user_roles, :role_definition_id
+    add_index :authentify_user_roles, :fort_token
   end
 end

@@ -2,9 +2,10 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
-<div class="pagination"><%= will_paginate models %></div>
-<h4><%=@title%></h4>
-    <table class="table table-striped">
+    <div id="no-more-tables">
+      <div class="pagination"><%= will_paginate models %></div>
+      <h4><%=@title%></h4>
+      <table class="table table-striped">
 		<tr>
 			<th><%= t('#') %></th>
 			<th><%= t('Production Order#') %></th>
@@ -18,34 +19,34 @@
 			<th><%= t('Checkin By') %></th>
 			<th><%= t('Last Updated By') %></th>
 			<th></th>
-			<th></th>
 			
 		</tr>
 		<% models.each do |r| %>
 		  <tr>
 		  	<% unless has_action_right?('show', params[:controller], r) %>
-		  	  <td><%= prt(r, :id) %></td>
+		  	  <td data-title="<%= t('#', :default => '#') %>" ><%= prt(r, :id) %></td>
 		  	<% else %>
-		  	  <td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{item_path(r)}" %></td>
+		  	  <td data-title="<%= t('#', :default => '#') %>" ><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{item_path(r)}" %></td>
 		  	<% end %>
-		  	<td><%= prt(r, 'order_id') %></td>
-		  	<td><%= prt(r, 'name') %></td>
-		  	<td><%= r.in_date.strftime("%Y/%m/%d") %></td>
-		  	<td><%= prt(r, :in_qty) %></td>
-			<td><%= prt(r, :stock_qty) %></td>
-			<td><%= prt(r, :storage_location) %></td> 
-			<td><%= prt(r, :packaging_desp) %></td>
-			<td><%= prt(r,'brief_note') %></td>
-			<td><%= prt(r, 'checkin_by.name') if r.checkin_by_id.present? %></td>
-			<td><%= prt(r, 'last_updated_by.name') %></td>    
-			<td><%= link_to t('Item Checkouts'), SUBURI + "/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts') %></td>
-			<td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+		  	<td data-title="<%= t('Production Order#', :default => 'Production Order#') %>" ><%= prt(r, 'order_id') %></td>
+
+        <td data-title="<%= t('Product Name', :default => 'Product Name') %>" ><%= prt(r, 'name') %></td>
+		  	<td data-title="<%= t('In Date', :default => 'In Date') %>" ><%= r.in_date.strftime("%Y/%m/%d") %></td>
+		  	<td data-title="<%= t('In Qty', :default => 'In Qty') %>" ><%= prt(r, :in_qty) %></td>
+			  <td data-title="<%= t('Stock Qty', :default => 'Stock Qty') %>" ><%= prt(r, :stock_qty) %></td>
+			  <td data-title="<%= t('Storage Location', :default => 'Storage Location') %>" ><%= prt(r, :storage_location) %></td>
+			  <td data-title="<%= t('Packaging', :default => 'Packaging') %>" ><%= prt(r, :packaging_desp) %></td>
+			  <td data-title="<%= t('Brief Note', :default => 'Brief Note') %>" ><%= prt(r,'brief_note') %></td>
+			  <td data-title="<%= t('Checkin By', :default => 'Checkin By') %>" ><%= prt(r, 'checkin_by.name') if r.checkin_by_id.present? %></td>
+			  <td data-title="<%= t('Last Updated By', :default => 'Last Updated By') %>" ><%= prt(r, 'last_updated_by.name') %></td>
+			  <td><%= link_to t('Item Checkouts'), SUBURI + "/view_handler?index=1&url=#{checkouts_path(:item_id => r.id)}", :class => BUTTONS_CLS['action']  if has_action_right?('index', 'produced_item_warehousex/checkouts') %></td>
+			      <%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_item_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %>
 			
 		  </tr>
 		<% end %>
 	</table>
 	
-	<table class="table table-striped">
+	    <table class="table table-striped">
 	  <tr>
 	    <th>
 	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -53,5 +54,5 @@
 	    </th>
 	  </tr>
 	</table>
-
+    </div>
 <% end %>	

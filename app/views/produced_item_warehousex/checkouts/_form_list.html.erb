@@ -20,20 +20,20 @@
 		</tr>
 		<% models.each do |r| %>
 		  <tr>
-		  	<td><%= r.id %></td>
-		  	<td><%= r.out_date.strftime("%Y/%m/%d") %></td>		  	
+		  	<td data-title="<%= t('#', :default => '#') %>" ><%= r.id %></td>
+		  	<td data-title="<%= t('Out Date', :default => 'Out Date') %>" ><%= r.out_date.strftime("%Y/%m/%d") %></td>
 		  	<% if has_action_right?('show', 'produced_item_warehousex/items', ProducedItemWarehousex::Item.find_by_id(r.item_id))%>
-		  	  <td><%= link_to r.item_id, SUBURI + "/view_handler?index=1&url=#{item_path(:id => r.item_id)}" %></td>
+		  	  <td data-title="<%= t('Item#', :default => 'Item#') %>" ><%= link_to r.item_id, SUBURI + "/view_handler?index=1&url=#{item_path(:id => r.item_id)}" %></td>
 		  	<% else %>
-		  	  <td><%= r.item_id %></td>
+		  	  <td data-title="<%= t('Item#', :default => 'Item#') %>" ><%= r.item_id %></td>
 		  	<% end %>
-		  	<td><%= prt(r, 'item.name') %></td>
-		  	<td><%= prt(r, :out_qty) %></td>
-			<td><%= prt(r, :brief_note) %></td>
-			<td><%= prt(r, 'requested_by.name') %></td> 
-			<td><%= prt(r, 'checkout_by.name') %></td>
-			<td><%= prt(r, 'last_updated_by.name') %></td>    
-			<td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_checkout_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
+		  	<td data-title="<%= t('Name', :default => 'Name') %>" ><%= prt(r, 'item.name') %></td>
+		  	<td data-title="<%= t('Out Qty', :default => 'Out Qty') %>" ><%= prt(r, :out_qty) %></td>
+			  <td data-title="<%= t('Brief Note', :default => 'Brief Note') %>" ><%= prt(r, :brief_note) %></td>
+			  <td data-title="<%= t('Requested By', :default => 'Requested By') %>" ><%= prt(r, 'requested_by.name') %></td>
+			  <td data-title="<%= t('Checkout By', :default => 'Checkout By') %>" ><%= prt(r, 'checkout_by.name') %></td>
+			  <td data-title="<%= t('Last Updated By', :default => 'Last Updated By') %>" ><%= prt(r, 'last_updated_by.name') %></td>
+			  <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_checkout_path(r)}", :class => BUTTONS_CLS['action']  if has_action_right?('update', params[:controller], r) %></td>
 			
 		  </tr>
 		<% end %>

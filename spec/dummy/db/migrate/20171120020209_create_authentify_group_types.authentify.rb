@@ -5,8 +5,12 @@ class CreateAuthentifyGroupTypes < ActiveRecord::Migration
       t.string :name
       t.timestamps
       t.string :brief_note
-      t.string :fort_token
-      
+      t.string :resource_string
+      t.string :fort_token  
+      t.integer :id_in_cis    
     end
+    
+    add_index :authentify_group_types, :name 
+    add_index :authentify_group_types, :fort_token
   end
 end

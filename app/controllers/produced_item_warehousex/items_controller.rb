@@ -4,8 +4,9 @@ module ProducedItemWarehousex
   class ItemsController < ApplicationController
     before_action :require_employee
     before_action :load_record
-    after_action :info_logger, :except => [:new, :edit, :event_action_result, :wf_edit_result, :search_results, :stats_results, :acct_summary_result]
-    
+    # after_action :info_logger, :except => [:new, :edit, :event_action_result, :wf_edit_result, :search_results, :stats_results, :acct_summary_result]
+    after_action :generate_noti, :except => [:new, :edit, :event_action_result, :wf_edit_result, :search_results, :stats_results, :acct_summary_result]
+
     def index
       @title = t('Warehouse Items')
       @items = params[:produced_item_warehousex_items][:model_ar_r]
@@ -74,7 +75,29 @@ module ProducedItemWarehousex
       @order = ProducedItemWarehousex.order_class.find_by_id(params[:order_id]) if params[:order_id].present?
       @order = ProducedItemWarehousex.order_class.find_by_id(ProducedItemWarehousex::Item.find_by_id(params[:id]).order_id) if params[:id].present?
     end
-    
+
+
+    def generate_noti
+      case params[:action]
+        when 'create'
+          msg = t('New Warehouse Item#') + '(' + t('Id') +': ' + @item.id.to_s + ', ' + t('Name') + ': ' + @item.name + ', ' + t('whs_id') +':  ' + @item.whs_id.to_s + t('was created. ') + t('Quantity:') + @item.in_qty.to_s
+
+        when 'update'
+          msg = t("Warehouse Item#") + @item.id.to_s + ' ' + t('was changed. Here is a list of fields changed:')
+          msg += ' ' + t('Quantity') if @item.in_qty_changed?
+          msg += ' ' + t('Stock Qty') if @item.stock_qty_changed?
+          msg += ' ' + t('Storage Location') if @item.storage_location_changed?
+          msg += ' ' + t('Brief Note') if @item.brief_note_changed?
+          msg += ' ' + t('Packaging Desc') if @item.packaging_desp_changed?
+          urgency = 6
+        when 'destroy'
+          msg = t("Warehouse Item#") + params[:id].to_s + ' ' + t('has been deleted')
+
+      end
+      noti_logger((@item.present? ? @item.id : params[:id]), params[:controller], msg)  #nil for urgency
+    end
+
+
     private
     
     def new_params

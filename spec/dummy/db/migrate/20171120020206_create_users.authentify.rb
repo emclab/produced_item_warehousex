@@ -24,6 +24,7 @@ class CreateUsers < ActiveRecord::Migration
       t.boolean :remember_me, default: false
       t.string :fort_token
       t.text :current_sessions
+      t.text :home_redirect
     end
     
     add_index :authentify_users, :name
